@@ -184,13 +184,66 @@
     <div class="products-container">
         <h2 class="section-title">Latest Collection</h2>
         <div class="product-grid" id="main-product-grid">
+            
+            <div class="product-card" data-category="saree" onclick="openProductDetails('Pure Silk Bandhani Saree with Zari Border', 1500, 2999, 'images/saree1.jpg', 'Beautiful pure silk bandhani saree perfect for weddings and festivals. Features heavy zari work border.')">
+                <div class="image-wrapper"><img src="images/saree1.jpg" alt="Pure Silk Bandhani Saree" onerror="this.src='images/placeholder.jpg'"></div>
+                <div class="product-details">
+                    <div class="product-title">Pure Silk Bandhani Saree with Zari Border</div>
+                    <div class="product-price">₹1,500</div>
+                    <div class="product-mrp">₹2,999</div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-cart" onclick="event.stopPropagation(); addToCart('Pure Silk Bandhani Saree', 1500, 'images/saree1.jpg')">Cart</button>
+                        <button type="button" class="btn-buy" onclick="event.stopPropagation(); showCheckoutSingle('Pure Silk Bandhani Saree', 1500)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="suit" onclick="openProductDetails('Premium Bandhani Cotton Unstitched Suit', 800, 1499, 'images/suit1.jpg', 'Comfortable daily wear cotton suit with authentic Rajasthani bandhani print. Unstitched fabric for perfect custom fit.')">
+                <div class="image-wrapper"><img src="images/suit1.jpg" alt="Bandhani Cotton Suit" onerror="this.src='images/placeholder.jpg'"></div>
+                <div class="product-details">
+                    <div class="product-title">Premium Bandhani Cotton Unstitched Suit</div>
+                    <div class="product-price">₹800</div>
+                    <div class="product-mrp">₹1,499</div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-cart" onclick="event.stopPropagation(); addToCart('Bandhani Cotton Suit', 800, 'images/suit1.jpg')">Cart</button>
+                        <button type="button" class="btn-buy" onclick="event.stopPropagation(); showCheckoutSingle('Bandhani Cotton Suit', 800)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="dupatta" onclick="openProductDetails('Traditional Rajasthani Bandhani Dupatta', 400, 799, 'images/dupatta1.jpg', 'Vibrant bandhani dupatta to mix and match with your ethnic wear. Made from soft fabric with beautiful tassels.')">
+                <div class="image-wrapper"><img src="images/dupatta1.jpg" alt="Traditional Bandhani Dupatta" onerror="this.src='images/placeholder.jpg'"></div>
+                <div class="product-details">
+                    <div class="product-title">Traditional Rajasthani Bandhani Dupatta</div>
+                    <div class="product-price">₹400</div>
+                    <div class="product-mrp">₹799</div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-cart" onclick="event.stopPropagation(); addToCart('Traditional Bandhani Dupatta', 400, 'images/dupatta1.jpg')">Cart</button>
+                        <button type="button" class="btn-buy" onclick="event.stopPropagation(); showCheckoutSingle('Traditional Bandhani Dupatta', 400)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="suit" onclick="openProductDetails('Jaipuri Katha Work Cotton Suit', 950, 1899, 'images/katha_suit.jpg', 'Elegant Jaipuri Katha work suit piece. Intricate hand-stitched details on premium breathable cotton.')">
+                <div class="image-wrapper"><img src="images/katha_suit.jpg" alt="Katha Work Suit" onerror="this.src='images/suit1.jpg'"></div>
+                <div class="product-details">
+                    <div class="product-title">Jaipuri Katha Work Cotton Suit</div>
+                    <div class="product-price">₹950</div>
+                    <div class="product-mrp">₹1,899</div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-cart" onclick="event.stopPropagation(); addToCart('Katha Work Suit', 950, 'images/katha_suit.jpg')">Cart</button>
+                        <button type="button" class="btn-buy" onclick="event.stopPropagation(); showCheckoutSingle('Katha Work Suit', 950)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
             <div id="no-results-msg" style="display: none; width: 100%; text-align: center; grid-column: span 2; padding: 20px; color: #878787;">Koi product nahi mila.</div>
         </div>
     </div>
 
     <div class="site-footer">
         <h3>MANISHA TEXTILE</h3>
-        <span class="subtitle">by Kundan Verma</span>
+        <span class="subtitle">Jaipuri Ethnic Collection</span>
         <div class="footer-info">
             <p>📍 Shop No. 12, Main Market, Jaipur, Rajasthan, India</p>
             <p>📞 +91 98765 43210</p>
@@ -416,154 +469,13 @@
 </div>
 
 <script>
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCas-VzIZhq6KJ1oTyZIprwwA_motmAqYk",
-  authDomain: "manisha-textiles.firebaseapp.com",
-  projectId: "manisha-textiles",
-  storageBucket: "manisha-textiles.firebasestorage.app",
-  messagingSenderId: "997507629799",
-  appId: "1:997507629799:web:aec2e7448f3271a86bd842",
-  measurementId: "G-N49KW13M72"
-};
     var cartList = [];
     var currentViewedProduct = {};
     var currentCategory = 'all'; 
     var isLoggedIn = false; 
     var selectedPaymentMethod = 'COD';
 
-    var productList = [
-        {
-            name: "Gajji Modal sandhani saree",
-            price: 1500, mrp: 2999,
-            img: "/storage/emulated/0/index.html/1960176131_2.jpg",
-            desc: "Beautiful pure silk bandhani saree perfect for weddings and festivals. Features heavy zari work border.",
-            category: "saree"
-        },
-        {
-            name: "Premium Bandhani Cotton Unstitched Suit",
-            price: 800, mrp: 1499,
-            img: "/storage/emulated/0/index.html/IMG-20260604-WA0000.jpg",
-            desc: "Comfortable daily wear cotton suit with authentic Rajasthani bandhani print. Unstitched fabric for perfect custom fit.",
-            category: "suit"
-        },
-        {
-            name: "Traditional Rajasthani Bandhani Dupatta",
-            price: 400, mrp: 799,
-            img: "/storage/emulated/0/index.html/duppta (1).jpg",
-            desc: "Vibrant bandhani dupatta to mix and match with your ethnic wear. Made from soft fabric with beautiful tassels.",
-            category: "dupatta"
-        },
-        {
-            name: "Jaipuri Katha Work Cotton Suit",
-            price: 950, mrp: 1899,
-            img: "/storage/emulated/0/index.html/katha_suit.jpg",
-            desc: "Elegant Jaipuri Katha work suit piece. Intricate hand-stitched details on premium breathable cotton.",
-            category: "suit"
-        },
-        {
-            name: "Green Leheriya Gajji Silk Saree",
-            price: 2100, mrp: 3500,
-            img: "green_leheriya.jpg",
-            desc: "Authentic Jaipuri Leheriya print on pure Gajji Silk. Perfect for festive occasions like Teej.",
-            category: "saree"
-        },
-        {
-            name: "Red Heavy Bandhani Saree with Gota Patti",
-            price: 3500, mrp: 5999,
-            img: "red_bandhani_gota.jpg",
-            desc: "Traditional red bridal bandhani saree with exquisite hand-crafted Gota Patti work.",
-            category: "saree"
-        },
-        {
-            name: "Pure Cotton Anarkali Suit Set (Bandhej)",
-            price: 1250, mrp: 2499,
-            img: "anarkali_suit.jpg",
-            desc: "Flared Anarkali suit set in breathable cotton with vibrant Bandhej print and matching dupatta.",
-            category: "suit"
-        },
-        {
-            name: "Yellow Chanderi Silk Suit with Dupatta",
-            price: 1800, mrp: 3200,
-            img: "yellow_chanderi.jpg",
-            desc: "Elegant unstitched Chanderi silk suit piece in bright yellow, complete with a Zari border dupatta.",
-            category: "suit"
-        },
-        {
-            name: "Royal Blue Modal Silk Bandhani Saree",
-            price: 1650, mrp: 2800,
-            img: "blue_modal_saree.jpg",
-            desc: "Super soft modal silk saree featuring a rich royal blue color and intricate white bandhej dots.",
-            category: "saree"
-        },
-        {
-            name: "Pink Single Dot Bandhani Saree",
-            price: 1100, mrp: 1999,
-            img: "pink_single_dot.jpg",
-            desc: "Lightweight pink saree with classic single dot bandhani pattern. Ideal for daily or office wear.",
-            category: "saree"
-        },
-        {
-            name: "Cotton Floral Kurta Pant Set",
-            price: 999, mrp: 1799,
-            img: "floral_kurta_set.jpg",
-            desc: "Stitched pure cotton set featuring Jaipuri floral block print. Comes with comfortable matching pants.",
-            category: "suit"
-        },
-        {
-            name: "Maroon Velvet Bandhani Suit Piece",
-            price: 2500, mrp: 4500,
-            img: "maroon_velvet_suit.jpg",
-            desc: "Premium winter wear velvet unstitched suit with heavy neck embroidery and bandhani design.",
-            category: "suit"
-        },
-        {
-            name: "Multi-color Gulti Bandhani Saree",
-            price: 2800, mrp: 4999,
-            img: "multi_gulti_saree.jpg",
-            desc: "Stunning multi-color gulti bandhani work on fine fabric. A true masterpiece of Rajasthani craftsmanship.",
-            category: "saree"
-        },
-        {
-            name: "Peach Muslin Silk Suit Piece",
-            price: 1450, mrp: 2600,
-            img: "peach_muslin.jpg",
-            desc: "Soft and flowy muslin silk unstitched material in a soothing peach shade with delicate thread work.",
-            category: "suit"
-        }
-    ];
-
-    function renderProducts() {
-        var grid = document.getElementById('main-product-grid');
-        var noResultsMsg = document.getElementById('no-results-msg').outerHTML;
-        var htmlContent = '';
-
-        for (var i = 0; i < productList.length; i++) {
-            var p = productList[i];
-            var safeName = p.name.replace(/'/g, "\\'");
-            var safeDesc = p.desc.replace(/'/g, "\\'");
-            
-            htmlContent += `
-            <div class="product-card" data-category="${p.category}" onclick="openProductDetails('${safeName}', ${p.price}, ${p.mrp}, '${p.img}', '${safeDesc}')">
-                <div class="image-wrapper"><img src="${p.img}" alt="${p.name}" onerror="this.src='/storage/emulated/0/index.html/IMG-20260604-WA0000.jpg'"></div>
-                <div class="product-details">
-                    <div class="product-title">${p.name}</div>
-                    <div class="product-price">₹${p.price}</div>
-                    <div class="product-mrp">₹${p.mrp}</div>
-                    <div class="btn-group">
-                        <button type="button" class="btn-cart" onclick="event.stopPropagation(); addToCart('${safeName}', ${p.price}, '${p.img}')">Cart</button>
-                        <button type="button" class="btn-buy" onclick="event.stopPropagation(); showCheckoutSingle('${safeName}', ${p.price})">Buy Now</button>
-                    </div>
-                </div>
-            </div>`;
-        }
-        
-        grid.innerHTML = htmlContent + noResultsMsg;
-    }
-
     window.onload = function() {
-        renderProducts();
-
         if(localStorage.getItem('mt_cart')) {
             cartList = JSON.parse(localStorage.getItem('mt_cart'));
             updateCartBadges();
@@ -615,7 +527,7 @@ const firebaseConfig = {
             cartList.push({ name: name, price: price, img: img, qty: 1 }); 
         }
         updateCartBadges();
-        saveData();
+        saveData(); 
         showToast("Added to Cart!");
     }
 
@@ -623,6 +535,22 @@ const firebaseConfig = {
         var views = document.getElementsByClassName('view-page');
         for(var i = 0; i < views.length; i++) {
             views[i].classList.remove('active-view');
+        }
+    }
+
+    function checkAndFillCheckoutProfile() {
+        if(isLoggedIn) {
+            var savedName = localStorage.getItem('mt_userName');
+            var savedContact = localStorage.getItem('mt_userContact');
+            if(savedName && document.getElementById('co-name').value === '') {
+                document.getElementById('co-name').value = savedName;
+            }
+            if(savedContact && document.getElementById('co-phone').value === '') {
+                var phoneOnly = savedContact.replace(/\D/g, "");
+                if(phoneOnly.length === 10) {
+                    document.getElementById('co-phone').value = phoneOnly;
+                }
+            }
         }
     }
 
@@ -651,7 +579,7 @@ const firebaseConfig = {
         var sliderHtml = '';
         for(var i=1; i<=4; i++) {
             sliderHtml += '<div class="pd-image-container">' +
-                          '<img src="' + imgUrl + '" alt="Product Image ' + i + '">' +
+                          '<img src="' + imgUrl + '" alt="Product Image ' + i + '" onerror="this.src=\'images/placeholder.jpg\'">' +
                           '<div class="image-counter">' + i + '/4</div>' +
                           '</div>';
         }
@@ -692,7 +620,7 @@ const firebaseConfig = {
             totalPrice += itemTotal;
             
             htmlContent += '<div class="cart-item">' +
-                '<img src="' + item.img + '" class="cart-item-img">' +
+                '<img src="' + item.img + '" class="cart-item-img" onerror="this.src=\'images/placeholder.jpg\'">' +
                 '<div class="cart-item-details">' +
                     '<div class="cart-item-title">' + item.name + '</div>' +
                     '<div class="cart-item-price">₹' + itemTotal + ' <span style="font-size:12px;color:#888;font-weight:normal;">(₹' + item.price + ' x ' + item.qty + ')</span></div>' +
@@ -715,14 +643,14 @@ const firebaseConfig = {
             cartList.splice(index, 1);
         }
         updateCartBadges();
-        saveData();
+        saveData(); 
         showCart(); 
     }
 
     function removeFromCart(index) {
         cartList.splice(index, 1);
         updateCartBadges();
-        saveData();
+        saveData(); 
         showCart();
     }
 
@@ -763,6 +691,7 @@ const firebaseConfig = {
         document.getElementById('total-payable').innerText = '₹' + price;
         document.getElementById('bottom-bar-price').innerText = '₹' + price;
         
+        checkAndFillCheckoutProfile();
         window.scrollTo(0, 0);
     }
 
@@ -772,7 +701,6 @@ const firebaseConfig = {
         var address = document.getElementById('co-address').value.trim();
         var pincode = document.getElementById('co-pincode').value.trim();
         var errorDiv = document.getElementById('co-error');
-        
 
         if (name === '' || phone === '' || address === '' || pincode === '') {
             errorDiv.innerText = "❌ Kripya order ke liye sabhi jankari bharein.";
@@ -797,8 +725,6 @@ const firebaseConfig = {
 
         if (selectedPaymentMethod === 'COD') {
             finalizeOrder(); 
-            
-            
         } else {
             var amt = document.getElementById('bottom-bar-price').innerText;
             document.getElementById('pay-screen-amount').innerText = amt;
@@ -851,7 +777,6 @@ const firebaseConfig = {
         setTimeout(function() {
             finalizeOrder();
         }, 1500); 
-        
     }
 
     function finalizeOrder() {
@@ -879,6 +804,7 @@ const firebaseConfig = {
         if (noOrdersMsg) noOrdersMsg.remove();
 
         document.getElementById('order-history-container').innerHTML = newOrderHtml + document.getElementById('order-history-container').innerHTML;
+        
         localStorage.setItem('mt_orders', document.getElementById('order-history-container').innerHTML);
 
         document.getElementById('co-name').value = '';
@@ -934,42 +860,82 @@ const firebaseConfig = {
     }
 
     function handleMockLogin() {
-        var userid = document.getElementById('login-userid').value;
-        var pass = document.getElementById('login-password').value;
-        if(userid === '' || pass === '') {
-            document.getElementById('login-error').innerText = "Please enter both details.";
-            document.getElementById('login-error').style.display = "block";
-        } else {
-            document.getElementById('login-error').style.display = "none";
-            isLoggedIn = true;
-            
-            var userName = "Kundan Verma"; 
-            
-            document.getElementById('header-auth-btn').innerText = "My Account";
-            document.getElementById('acc-name').innerText = userName;
-            document.getElementById('acc-contact').innerText = userid;
-            
-            localStorage.setItem('mt_loggedIn', 'true');
-            localStorage.setItem('mt_userName', userName);
-            localStorage.setItem('mt_userContact', userid);
+        var userid = document.getElementById('login-userid').value.trim();
+        var pass = document.getElementById('login-password').value.trim();
+        var errorDiv = document.getElementById('login-error');
 
-            showToast("Login Successful!");
-            closeAuth();
+        if(userid === '' || pass === '') {
+            errorDiv.innerText = "Please enter both details.";
+            errorDiv.style.display = "block";
+            return;
+        }
+
+        var userKey = 'user_' + userid.toLowerCase();
+        var storedUser = localStorage.getItem(userKey);
+
+        if (storedUser) {
+            var userData = JSON.parse(storedUser);
+
+            if (userData.password === pass) {
+                errorDiv.style.display = "none";
+                isLoggedIn = true;
+                
+                var userName = userData.name; 
+                
+                document.getElementById('header-auth-btn').innerText = "My Account";
+                document.getElementById('acc-name').innerText = userName;
+                document.getElementById('acc-contact').innerText = userData.contact;
+                
+                localStorage.setItem('mt_loggedIn', 'true');
+                localStorage.setItem('mt_userName', userName);
+                localStorage.setItem('mt_userContact', userData.contact);
+
+                showToast("Login Successful!");
+                
+                document.getElementById('login-userid').value = '';
+                document.getElementById('login-password').value = '';
+                
+                closeAuth();
+            } else {
+                errorDiv.innerText = "❌ Incorrect Password!";
+                errorDiv.style.display = "block";
+            }
+        } else {
+            errorDiv.innerText = "❌ Account nahi mila. Pehle Signup karein.";
+            errorDiv.style.display = "block";
         }
     }
 
     function handleMockSignup() {
-        var name = document.getElementById('signup-name').value;
-        var contact = document.getElementById('signup-contact').value;
-        var pass = document.getElementById('signup-password').value;
+        var name = document.getElementById('signup-name').value.trim();
+        var contact = document.getElementById('signup-contact').value.trim();
+        var pass = document.getElementById('signup-password').value.trim();
+        var errorDiv = document.getElementById('signup-error');
+        
         if(name === '' || contact === '' || pass === '') {
-            document.getElementById('signup-error').innerText = "Please fill all details.";
-            document.getElementById('signup-error').style.display = "block";
-        } else {
-            document.getElementById('signup-error').style.display = "none";
-            showToast("Account Created Successfully!");
-            showLogin();
+            errorDiv.innerText = "Please fill all details.";
+            errorDiv.style.display = "block";
+            return;
         }
+
+        var userKey = 'user_' + contact.toLowerCase();
+        
+        var userData = {
+            name: name,
+            contact: contact,
+            password: pass
+        };
+
+        localStorage.setItem(userKey, JSON.stringify(userData));
+
+        errorDiv.style.display = "none";
+        showToast("Account Created Successfully!");
+        
+        document.getElementById('signup-name').value = '';
+        document.getElementById('signup-contact').value = '';
+        document.getElementById('signup-password').value = '';
+        
+        showLogin();
     }
 
     function logout() {
