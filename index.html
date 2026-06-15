@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manisha Textile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: #f1f3f6; color: #212121; overflow-x: hidden; }
+        
+        /* App Header */
+        .app-header { background-color: #8b0000; padding: 10px 15px; color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .brand-name { font-size: 20px; font-weight: bold; letter-spacing: 0.5px; cursor: pointer; }
+        .header-icons { display: flex; gap: 15px; align-items: center; }
+        .login-text-btn { font-size: 14px; font-weight: bold; cursor: pointer; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 4px; }
+        
+        /* Cart Icon & Badge */
+        .cart-icon-wrapper { position: relative; cursor: pointer; font-size: 20px; }
+        .cart-badge { position: absolute; top: -8px; right: -8px; background: #ffcc00; color: #8b0000; font-size: 10px; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        
+        /* Search Bar & Promo */
+        .search-container { position: relative; width: 100%; }
+        .search-bar { width: 100%; padding: 10px 15px; border-radius: 4px; border: none; outline: none; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .promo-banner { background-color: #ffeaea; padding: 15px; text-align: center; border-bottom: 1px solid #f8d7d7; }
+        .promo-banner h3 { color: #8b0000; font-size: 16px; margin-bottom: 5px; }
+        .promo-banner p { font-size: 12px; color: #555; }
+
+        /* Category Filters */
+        .category-filters { display: flex; gap: 10px; overflow-x: auto; padding: 15px 10px 5px; background: #f1f3f6; scroll-snap-type: x mandatory; }
+        .category-filters::-webkit-scrollbar { display: none; }
+        .filter-btn { padding: 8px 18px; background: #fff; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; color: #555; transition: all 0.3s ease; }
+        .filter-btn.active { background: #8b0000; color: #fff; border-color: #8b0000; }
+
+        /* Product Grid */
+        .products-container { padding: 10px; padding-bottom: 20px; }
+        .section-title { font-size: 18px; font-weight: 600; margin: 15px 5px 10px; color: #212121; }
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        /* Product Card */
+        .product-card { background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; cursor: pointer; }
+        .image-wrapper { width: 100%; aspect-ratio: 3/4; overflow: hidden; background: #fafafa; position: relative; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; }
+        .product-details { padding: 10px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-title { font-size: 13px; color: #212121; margin-bottom: 5px; line-height: 1.4; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .product-price { font-size: 16px; font-weight: bold; color: #212121; margin-bottom: 2px; }
+        .product-mrp { font-size: 12px; color: #878787; text-decoration: line-through; margin-bottom: 10px; }
+        
+        /* Buttons */
+        .btn-group { display: flex; gap: 5px; margin-top: auto; }
+        .btn-cart { flex: 1; padding: 8px 0; background: #fff; border: 1px solid #e0e0e0; color: #212121; font-size: 12px; font-weight: 600; border-radius: 2px; cursor: pointer; }
+        .btn-buy { flex: 1; padding: 8px 0; background: #8b0000; border: 1px solid #8b0000; color: #fff; font-size: 12px; font-weight: 600; border-radius: 2px; cursor: pointer; }
+
+        /* Views */
+        .view-page { display: none; background: #f1f3f6; min-height: 100vh; padding-bottom: 80px; }
+        .active-view { display: block; }
+
+        /* General Page Styles */
+        .page-header { background: #fff; padding: 15px; display: flex; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 10; }
+        .back-btn { background: none; border: none; font-size: 20px; margin-right: 15px; cursor: pointer; color: #212121; }
+        .page-title { font-size: 18px; font-weight: 600; }
+        .card-container { background: #fff; margin-top: 10px; padding: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .card-container h4 { font-size: 14px; color: #878787; text-transform: uppercase; margin-bottom: 15px; }
+        
+        /* Bottom Bar */
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; padding: 10px 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 10; gap: 10px; }
+        .final-price { font-size: 20px; font-weight: bold; }
+        .btn-action-large { flex: 1; background: #8b0000; color: #fff; padding: 12px 15px; border: none; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; text-align: center; }
+        .btn-action-secondary { flex: 1; background: #fff; color: #212121; padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; text-align: center; }
+
+        /* PRODUCT DETAILS PAGE STYLES */
+        .pd-image-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; background: #fff; border-bottom: 1px solid #eee; }
+        .pd-image-slider::-webkit-scrollbar { display: none; }
+        .pd-image-container { flex: 0 0 100%; scroll-snap-align: start; aspect-ratio: 3/4; position: relative; }
+        .pd-image-container img { width: 100%; height: 100%; object-fit: cover; }
+        .image-counter { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        
+        .pd-info-section { background: white; padding: 15px; margin-bottom: 10px; }
+        .pd-brand { color: #878787; font-size: 13px; font-weight: 600; margin-bottom: 5px; text-transform: uppercase; }
+        .pd-title { font-size: 16px; color: #212121; line-height: 1.4; margin-bottom: 10px; }
+        .pd-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 15px; }
+        .pd-current-price { font-size: 24px; font-weight: bold; color: #212121; }
+        .pd-mrp { font-size: 14px; color: #878787; text-decoration: line-through; }
+        .pd-discount { color: #388e3c; font-size: 14px; font-weight: bold; }
+        
+        .pd-section-title { font-size: 15px; font-weight: bold; color: #212121; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+        .pd-summary-text { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 15px; }
+        .pd-highlights { list-style: none; padding: 0; }
+        .pd-highlights li { font-size: 13px; color: #555; margin-bottom: 8px; position: relative; padding-left: 15px; }
+        .pd-highlights li::before { content: '•'; position: absolute; left: 0; color: #8b0000; font-weight: bold; }
+
+        /* Checkout & Cart Styles */
+        .form-input { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 4px; margin-bottom: 15px; font-size: 14px; outline: none; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
+        .summary-total { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0; font-weight: bold; font-size: 16px; color: #8b0000; }
+        
+        .cart-item { display: flex; gap: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .cart-item-img { width: 70px; height: 90px; object-fit: cover; border-radius: 4px; }
+        .cart-item-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .cart-item-title { font-size: 14px; color: #212121; margin-bottom: 4px; }
+        .cart-item-price { font-size: 16px; font-weight: bold; color: #8b0000; margin-bottom: 10px; }
+        
+        /* Quantity Buttons Styles */
+        .qty-controls { display: flex; align-items: center; gap: 12px; }
+        .qty-btn { width: 26px; height: 26px; background: #f1f3f6; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #333; }
+        .qty-btn:active { background: #e0e0e0; }
+        .cart-item-remove { color: #e53935; font-size: 13px; font-weight: bold; cursor: pointer; background: #ffebee; padding: 4px 10px; border-radius: 4px; border: none; margin-left: auto; }
+        
+        .empty-cart-msg { text-align: center; padding: 40px 20px; color: #878787; }
+        
+        /* Popup Notification */
+        .toast-notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #388e3c; color: white; padding: 10px 20px; border-radius: 4px; font-size: 14px; z-index: 400; display: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        
+        /* SITE FOOTER STYLES */
+        .site-footer { background-color: #2b0c16; color: #f1f1f1; padding: 30px 20px 40px; margin-top: 20px; border-top: 3px solid #8b0000; }
+        .site-footer h3 { font-size: 22px; margin-bottom: 5px; color: #fff; letter-spacing: 1px; font-weight: normal; }
+        .site-footer .subtitle { color: #878787; font-size: 12px; margin-bottom: 20px; display: block; }
+        .footer-info p { margin-bottom: 8px; font-size: 13px; color: #ccc; line-height: 1.5; }
+        .social-icons { margin: 25px 0; display: flex; gap: 15px; }
+        .social-icons span { background: rgba(255,255,255,0.1); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; }
+        .footer-collapsible { border-top: 1px solid rgba(255,255,255,0.1); padding: 15px 0; display: flex; justify-content: space-between; align-items: center; font-size: 14px; cursor: pointer; font-weight: 500; }
+        .footer-collapsible::after { content: '▼'; font-size: 10px; color: #aaa; }
+        .subscribe-section h4 { font-size: 13px; margin: 25px 0 10px; font-weight: normal; color: #ddd; line-height: 1.4; }
+        .newsletter-box { display: flex; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px; margin-bottom: 30px; }
+        .newsletter-input { flex: 1; background: transparent; border: none; outline: none; color: white; font-size: 13px; }
+        .newsletter-input::placeholder { color: #888; }
+        .newsletter-btn { background: rgba(255,255,255,0.2); color: white; border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 14px; }
+        .copyright { text-align: left; font-size: 11px; color: #888; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; line-height: 1.5; }
+
+        /* AUTH PAGES STYLES */
+        .auth-overlay { display: none; background: rgba(0, 0, 0, 0.6); min-height: 100vh; position: fixed; top: 0; left: 0; width: 100%; z-index: 200; overflow-y: auto; }
+        .auth-card { background: #fff; width: 90%; max-width: 400px; padding: 40px 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 20px 0; }
+        .close-auth { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #555; }
+        .auth-brand { text-align: center; color: #8b0000; font-size: 26px; font-weight: bold; margin-bottom: 5px; }
+        .auth-subtitle { text-align: center; color: #878787; font-size: 14px; margin-bottom: 25px; }
+        .modern-input-group { margin-bottom: 15px; }
+        .modern-input-group label { display: block; font-size: 13px; color: #212121; margin-bottom: 6px; font-weight: 500; }
+        .input-wrapper { position: relative; }
+        .modern-input-auth { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; outline: none; }
+        .pwd-toggle-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; cursor: pointer; }
+        .btn-modern-auth { width: 100%; background: #8b0000; color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 5px; }
+        .switch-auth-link { text-align: center; margin-top: 20px; font-size: 14px; color: #555; }
+        .switch-auth-link a { color: #8b0000; font-weight: bold; text-decoration: none; cursor: pointer; }
+        .error-msg { color: #e53935; font-size: 13px; text-align: center; margin-bottom: 10px; display: none; font-weight: 500; }
+        
+        /* Payment Screen Specific */
+        .payment-box { border: 1px solid #ddd; border-radius: 6px; padding: 15px; margin-bottom: 15px; background: #fff; }
+        .fake-qr { border: 2px dashed #8b0000; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-weight: bold; color: #8b0000; background: #ffeaea; }
+    </style>
+</head>
+<body>
+
+<div id="toast" class="toast-notification">Notification</div>
+
+<div id="home-view" class="view-page active-view">
+    <header class="app-header">
+        <div class="top-row">
+            <div class="brand-name" onclick="showHome()">Manisha Textile</div>
+            <div class="header-icons">
+                <span class="login-text-btn" id="header-auth-btn" onclick="handleAuthClick()">Login</span>
+                <div class="cart-icon-wrapper" onclick="showCart()">
+                    <span>🛒</span>
+                    <span class="cart-badge" id="cart-badge">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search for Sarees, Suits, Dupattas..." onkeyup="filterProducts()">
+        </div>
+    </header>
+
+    <div class="promo-banner">
+        <h3>Jaipuri Bandhani Collection</h3>
+        <p>Special discounts on authentic Bandhani & Katha prints</p>
+    </div>
+
+    <div class="category-filters">
+        <button class="filter-btn active" onclick="setCategory('all', this)">All</button>
+        <button class="filter-btn" onclick="setCategory('saree', this)">Sarees</button>
+        <button class="filter-btn" onclick="setCategory('suit', this)">Suits</button>
+        <button class="filter-btn" onclick="setCategory('dupatta', this)">Dupattas</button>
+    </div>
+
+    <div class="products-container">
+        <h2 class="section-title">Latest Collection</h2>
+        <div class="product-grid" id="main-product-grid">
+            <div id="no-results-msg" style="display: none; width: 100%; text-align: center; grid-column: span 2; padding: 20px; color: #878787;">Koi product nahi mila.</div>
+        </div>
+    </div>
+
+    <div class="site-footer">
+        <h3>MANISHA TEXTILE</h3>
+        <span class="subtitle">by Kundan Verma</span>
+        <div class="footer-info">
+            <p>📍 Shop No. 12, Main Market, Jaipur, Rajasthan, India</p>
+            <p>📞 +91 98765 43210</p>
+            <p>✉️ info@manishatextile.com</p>
+        </div>
+        <div class="copyright">
+            © 2026 Manisha Textile. All rights reserved. eCommerce by Manisha Textile.<br>
+        </div>
+    </div>
+</div>
+
+<div id="product-detail-view" class="view-page">
+    <header class="page-header">
+        <button type="button" class="back-btn" onclick="showHome()">←</button>
+        <div class="page-title">Product Details</div>
+        <div class="cart-icon-wrapper" onclick="showCart()" style="margin-left: auto;">
+            <span>🛒</span>
+            <span class="cart-badge" id="pd-cart-badge">0</span>
+        </div>
+    </header>
+
+    <div class="pd-image-slider" id="pd-slider"></div>
+
+    <div class="pd-info-section">
+        <div class="pd-brand">Manisha Textile • Jaipur</div>
+        <h1 class="pd-title" id="pd-title">Product Title</h1>
+        
+        <div class="pd-price-row">
+            <span class="pd-current-price" id="pd-price">₹0</span>
+            <span class="pd-mrp" id="pd-mrp">₹0</span>
+            <span class="pd-discount" id="pd-discount">0% OFF</span>
+        </div>
+
+        <div class="pd-section-title">Product Summary</div>
+        <p class="pd-summary-text" id="pd-summary">Product description goes here.</p>
+
+        <div class="pd-section-title">Product Details</div>
+        <ul class="pd-highlights">
+            <li>Authentic Jaipuri Print & Work</li>
+            <li>Premium Quality Fabric</li>
+            <li>Fast Color & Durable</li>
+            <li>Care: Dry Clean Recommended</li>
+            <li>Dispatch within 24 Hours</li>
+        </ul>
+    </div>
+
+    <div class="bottom-bar">
+        <button type="button" class="btn-action-secondary" onclick="addCurrentToCart()">Add to Cart</button>
+        <button type="button" class="btn-action-large" onclick="buyCurrentNow()">Buy Now</button>
+    </div>
+</div>
+
+<div id="cart-view" class="view-page">
+    <div class="page-header">
+        <button type="button" class="back-btn" onclick="showHome()">←</button>
+        <div class="page-title">My Cart</div>
+    </div>
+    <div class="card-container" id="cart-items-container"></div>
+    <div class="bottom-bar">
+        <div>
+            <div style="font-size: 12px; color: #878787;">Cart Total</div>
+            <div class="final-price" id="cart-total-price">₹0</div>
+        </div>
+        <button type="button" class="btn-action-large" style="max-width: 150px;" onclick="checkoutFromCart()">Checkout</button>
+    </div>
+</div>
+
+<div id="checkout-view" class="view-page">
+    <div class="page-header">
+        <button type="button" class="back-btn" onclick="showHome()">←</button>
+        <div class="page-title">Order Summary</div>
+    </div>
+    
+    <div class="card-container">
+        <h4>1. Delivery Address</h4>
+        <input type="text" id="co-name" class="form-input" placeholder="Full Name (Pura Naam)">
+        <input type="tel" id="co-phone" class="form-input" placeholder="Mobile Number (10 digits)">
+        <input type="text" id="co-address" class="form-input" placeholder="House No., Building Name, Street">
+        <input type="text" id="co-pincode" class="form-input" placeholder="Pincode & City">
+        <div id="co-error" class="error-msg" style="text-align: left; font-size: 14px; margin-top: -5px; margin-bottom: 10px;"></div>
+    </div>
+    
+    <div class="card-container">
+        <h4>2. Item Details</h4>
+        <div style="font-weight: 500; font-size: 15px; margin-bottom: 5px;" id="checkout-item-name">Product Name</div>
+        <div style="color: #878787; font-size: 13px;" id="checkout-item-qty">Qty: 1</div>
+    </div>
+    
+    <div class="card-container">
+        <h4>3. Payment Options</h4>
+        <div style="display: flex; flex-direction: column; gap: 15px; font-size: 14px;">
+            <label><input type="radio" name="payment_method" value="COD" checked> Cash on Delivery (COD)</label>
+            <label><input type="radio" name="payment_method" value="UPI"> UPI (Google Pay, PhonePe, Paytm)</label>
+            <label><input type="radio" name="payment_method" value="CARD"> Credit / Debit / ATM Card</label>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <h4>Price Details</h4>
+        <div class="summary-row">
+            <span>Price</span>
+            <span id="summary-price">₹0</span>
+        </div>
+        <div class="summary-row">
+            <span>Delivery Charges</span>
+            <span style="color: #388e3c;">FREE Delivery</span>
+        </div>
+        <div class="summary-total">
+            <span>Amount Payable</span>
+            <span id="total-payable">₹0</span>
+        </div>
+    </div>
+    
+    <div class="bottom-bar">
+        <div>
+            <div style="font-size: 12px; color: #878787;">Total</div>
+            <div class="final-price" id="bottom-bar-price">₹0</div>
+        </div>
+        <button type="button" class="btn-action-large" onclick="proceedToPayment()">Proceed to Pay</button>
+    </div>
+</div>
+
+<div id="payment-view" class="view-page">
+    <header class="page-header">
+        <button type="button" class="back-btn" onclick="showCheckoutFromPayment()">←</button>
+        <div class="page-title">Secure Payment</div>
+    </header>
+    
+    <div class="card-container" style="text-align: center; padding: 30px 15px; margin-top: 10px;">
+        <div style="font-size: 14px; color: #878787; margin-bottom: 5px;">Amount to Pay</div>
+        <div style="font-size: 32px; font-weight: bold; color: #8b0000; margin-bottom: 25px;" id="pay-screen-amount">₹0</div>
+        
+        <div id="upi-section" style="display: none; text-align: left;" class="payment-box">
+            <h4 style="margin-bottom: 15px; color: #333;">Pay via UPI App</h4>
+            <div class="fake-qr">Scan QR Code</div>
+            <div style="text-align: center; margin: 10px 0; color: #888;">OR</div>
+            <input type="text" id="upi-id" class="form-input" placeholder="Enter UPI ID (e.g. 9876543210@ybl)">
+        </div>
+
+        <div id="card-section" style="display: none; text-align: left;" class="payment-box">
+            <h4 style="margin-bottom: 15px; color: #333;">Enter Card Details</h4>
+            <input type="text" id="card-num" class="form-input" placeholder="Card Number (16 digits)" maxlength="16">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="card-exp" class="form-input" placeholder="MM/YY" maxlength="5">
+                <input type="password" id="card-cvv" class="form-input" placeholder="CVV" maxlength="3">
+            </div>
+            <input type="text" id="card-name" class="form-input" placeholder="Name on Card">
+        </div>
+
+        <div id="payment-error" class="error-msg" style="text-align: left; margin-top: 10px;"></div>
+    </div>
+
+    <div class="bottom-bar">
+        <button type="button" class="btn-action-large" style="width: 100%;" onclick="processGatewayPayment()">Pay Now</button>
+    </div>
+</div>
+
+<div id="account-view" class="view-page">
+    <header class="page-header">
+        <button type="button" class="back-btn" onclick="showHome()">←</button>
+        <div class="page-title">My Account</div>
+    </header>
+    
+    <div class="card-container" style="text-align: center;">
+        <div style="width: 70px; height: 70px; background: #8b0000; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 10px;">👤</div>
+        <h3 id="acc-name" style="margin-bottom: 5px;">User Name</h3>
+        <p style="color: #878787; font-size: 14px; margin-bottom: 15px;" id="acc-contact">user@email.com</p>
+        <button type="button" style="padding: 8px 25px; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; font-weight: bold; cursor: pointer; color: #e53935;" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="card-container">
+        <h4 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">Order History</h4>
+        <div id="order-history-container">
+            <div id="no-orders-msg" style="text-align: center; color: #888; padding: 20px;">No past orders.</div>
+        </div>
+    </div>
+</div>
+
+<div id="login-view" class="auth-overlay">
+    <div class="auth-card">
+        <button type="button" class="close-auth" onclick="closeAuth()">←</button>
+        <div class="auth-brand">Manisha Textile</div>
+        <div class="modern-input-group">
+            <label>Email ID or Phone Number</label>
+            <input type="text" id="login-userid" class="modern-input-auth" placeholder="Enter your details">
+        </div>
+        <div class="modern-input-group">
+            <label>Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="login-password" class="modern-input-auth" placeholder="Enter password" style="padding-right: 40px;">
+                <span class="pwd-toggle-icon" id="toggle-login-pwd" onclick="togglePassword('login-password', 'toggle-login-pwd')">👁️</span>
+            </div>
+        </div>
+        <div id="login-error" class="error-msg"></div>
+        <button type="button" class="btn-modern-auth" onclick="handleMockLogin()">Login</button>
+        <div class="switch-auth-link">Don't have an account? <a onclick="showSignup()">Sign up</a></div>
+    </div>
+</div>
+
+<div id="signup-view" class="auth-overlay">
+    <div class="auth-card">
+        <button type="button" class="close-auth" onclick="closeAuth()">←</button>
+        <div class="auth-brand">Manisha Textile</div>
+        <div class="modern-input-group">
+            <label>Full Name</label>
+            <input type="text" id="signup-name" class="modern-input-auth" placeholder="Enter your full name">
+        </div>
+        <div class="modern-input-group">
+            <label>Mobile Number or Email</label>
+            <input type="text" id="signup-contact" class="modern-input-auth" placeholder="Enter email or phone">
+        </div>
+        <div class="modern-input-group">
+            <label>Create Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="signup-password" class="modern-input-auth" placeholder="Create a strong password" style="padding-right: 40px;">
+                <span class="pwd-toggle-icon" id="toggle-signup-pwd" onclick="togglePassword('signup-password', 'toggle-signup-pwd')">👁️</span>
+            </div>
+        </div>
+        <div id="signup-error" class="error-msg"></div>
+        <button type="button" class="btn-modern-auth" onclick="handleMockSignup()">Create Account</button>
+        <div class="switch-auth-link">Already have an account? <a onclick="showLogin()">Log in</a></div>
+    </div>
+</div>
+
+<script>
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCas-VzIZhq6KJ1oTyZIprwwA_motmAqYk",
+  authDomain: "manisha-textiles.firebaseapp.com",
+  projectId: "manisha-textiles",
+  storageBucket: "manisha-textiles.firebasestorage.app",
+  messagingSenderId: "997507629799",
+  appId: "1:997507629799:web:aec2e7448f3271a86bd842",
+  measurementId: "G-N49KW13M72"
+};
+    var cartList = [];
+    var currentViewedProduct = {};
+    var currentCategory = 'all'; 
+    var isLoggedIn = false; 
+    var selectedPaymentMethod = 'COD';
+
+    var productList = [
+        {
+            name: "Gajji Modal sandhani saree",
+            price: 1500, mrp: 2999,
+            img: "/storage/emulated/0/index.html/1960176131_2.jpg",
+            desc: "Beautiful pure silk bandhani saree perfect for weddings and festivals. Features heavy zari work border.",
+            category: "saree"
+        },
+        {
+            name: "Premium Bandhani Cotton Unstitched Suit",
+            price: 800, mrp: 1499,
+            img: "/storage/emulated/0/index.html/IMG-20260604-WA0000.jpg",
+            desc: "Comfortable daily wear cotton suit with authentic Rajasthani bandhani print. Unstitched fabric for perfect custom fit.",
+            category: "suit"
+        },
+        {
+            name: "Traditional Rajasthani Bandhani Dupatta",
+            price: 400, mrp: 799,
+            img: "/storage/emulated/0/index.html/duppta (1).jpg",
+            desc: "Vibrant bandhani dupatta to mix and match with your ethnic wear. Made from soft fabric with beautiful tassels.",
+            category: "dupatta"
+        },
+        {
+            name: "Jaipuri Katha Work Cotton Suit",
+            price: 950, mrp: 1899,
+            img: "/storage/emulated/0/index.html/katha_suit.jpg",
+            desc: "Elegant Jaipuri Katha work suit piece. Intricate hand-stitched details on premium breathable cotton.",
+            category: "suit"
+        },
+        {
+            name: "Green Leheriya Gajji Silk Saree",
+            price: 2100, mrp: 3500,
+            img: "green_leheriya.jpg",
+            desc: "Authentic Jaipuri Leheriya print on pure Gajji Silk. Perfect for festive occasions like Teej.",
+            category: "saree"
+        },
+        {
+            name: "Red Heavy Bandhani Saree with Gota Patti",
+            price: 3500, mrp: 5999,
+            img: "red_bandhani_gota.jpg",
+            desc: "Traditional red bridal bandhani saree with exquisite hand-crafted Gota Patti work.",
+            category: "saree"
+        },
+        {
+            name: "Pure Cotton Anarkali Suit Set (Bandhej)",
+            price: 1250, mrp: 2499,
+            img: "anarkali_suit.jpg",
+            desc: "Flared Anarkali suit set in breathable cotton with vibrant Bandhej print and matching dupatta.",
+            category: "suit"
+        },
+        {
+            name: "Yellow Chanderi Silk Suit with Dupatta",
+            price: 1800, mrp: 3200,
+            img: "yellow_chanderi.jpg",
+            desc: "Elegant unstitched Chanderi silk suit piece in bright yellow, complete with a Zari border dupatta.",
+            category: "suit"
+        },
+        {
+            name: "Royal Blue Modal Silk Bandhani Saree",
+            price: 1650, mrp: 2800,
+            img: "blue_modal_saree.jpg",
+            desc: "Super soft modal silk saree featuring a rich royal blue color and intricate white bandhej dots.",
+            category: "saree"
+        },
+        {
+            name: "Pink Single Dot Bandhani Saree",
+            price: 1100, mrp: 1999,
+            img: "pink_single_dot.jpg",
+            desc: "Lightweight pink saree with classic single dot bandhani pattern. Ideal for daily or office wear.",
+            category: "saree"
+        },
+        {
+            name: "Cotton Floral Kurta Pant Set",
+            price: 999, mrp: 1799,
+            img: "floral_kurta_set.jpg",
+            desc: "Stitched pure cotton set featuring Jaipuri floral block print. Comes with comfortable matching pants.",
+            category: "suit"
+        },
+        {
+            name: "Maroon Velvet Bandhani Suit Piece",
+            price: 2500, mrp: 4500,
+            img: "maroon_velvet_suit.jpg",
+            desc: "Premium winter wear velvet unstitched suit with heavy neck embroidery and bandhani design.",
+            category: "suit"
+        },
+        {
+            name: "Multi-color Gulti Bandhani Saree",
+            price: 2800, mrp: 4999,
+            img: "multi_gulti_saree.jpg",
+            desc: "Stunning multi-color gulti bandhani work on fine fabric. A true masterpiece of Rajasthani craftsmanship.",
+            category: "saree"
+        },
+        {
+            name: "Peach Muslin Silk Suit Piece",
+            price: 1450, mrp: 2600,
+            img: "peach_muslin.jpg",
+            desc: "Soft and flowy muslin silk unstitched material in a soothing peach shade with delicate thread work.",
+            category: "suit"
+        }
+    ];
+
+    function renderProducts() {
+        var grid = document.getElementById('main-product-grid');
+        var noResultsMsg = document.getElementById('no-results-msg').outerHTML;
+        var htmlContent = '';
+
+        for (var i = 0; i < productList.length; i++) {
+            var p = productList[i];
+            var safeName = p.name.replace(/'/g, "\\'");
+            var safeDesc = p.desc.replace(/'/g, "\\'");
+            
+            htmlContent += `
+            <div class="product-card" data-category="${p.category}" onclick="openProductDetails('${safeName}', ${p.price}, ${p.mrp}, '${p.img}', '${safeDesc}')">
+                <div class="image-wrapper"><img src="${p.img}" alt="${p.name}" onerror="this.src='/storage/emulated/0/index.html/IMG-20260604-WA0000.jpg'"></div>
+                <div class="product-details">
+                    <div class="product-title">${p.name}</div>
+                    <div class="product-price">₹${p.price}</div>
+                    <div class="product-mrp">₹${p.mrp}</div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-cart" onclick="event.stopPropagation(); addToCart('${safeName}', ${p.price}, '${p.img}')">Cart</button>
+                        <button type="button" class="btn-buy" onclick="event.stopPropagation(); showCheckoutSingle('${safeName}', ${p.price})">Buy Now</button>
+                    </div>
+                </div>
+            </div>`;
+        }
+        
+        grid.innerHTML = htmlContent + noResultsMsg;
+    }
+
+    window.onload = function() {
+        renderProducts();
+
+        if(localStorage.getItem('mt_cart')) {
+            cartList = JSON.parse(localStorage.getItem('mt_cart'));
+            updateCartBadges();
+        }
+        
+        if(localStorage.getItem('mt_loggedIn') === 'true') {
+            isLoggedIn = true;
+            document.getElementById('header-auth-btn').innerText = "My Account";
+            document.getElementById('acc-name').innerText = localStorage.getItem('mt_userName') || "Customer";
+            document.getElementById('acc-contact').innerText = localStorage.getItem('mt_userContact') || "";
+        }
+        
+        if(localStorage.getItem('mt_orders')) {
+            document.getElementById('order-history-container').innerHTML = localStorage.getItem('mt_orders');
+        }
+    };
+
+    function saveData() {
+        localStorage.setItem('mt_cart', JSON.stringify(cartList));
+    }
+
+    function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(function() { toast.style.display = 'none'; }, 2000);
+    }
+
+    function updateCartBadges() {
+        var totalItems = 0;
+        for(var i = 0; i < cartList.length; i++){
+            totalItems += cartList[i].qty;
+        }
+        document.getElementById('cart-badge').innerText = totalItems;
+        document.getElementById('pd-cart-badge').innerText = totalItems;
+    }
+
+    function addToCart(name, price, img) {
+        var existingItemIndex = -1;
+        for(var i = 0; i < cartList.length; i++) {
+            if(cartList[i].name === name) {
+                existingItemIndex = i;
+                break;
+            }
+        }
+        if(existingItemIndex !== -1) {
+            cartList[existingItemIndex].qty += 1; 
+        } else {
+            cartList.push({ name: name, price: price, img: img, qty: 1 }); 
+        }
+        updateCartBadges();
+        saveData();
+        showToast("Added to Cart!");
+    }
+
+    function hideAllViews() {
+        var views = document.getElementsByClassName('view-page');
+        for(var i = 0; i < views.length; i++) {
+            views[i].classList.remove('active-view');
+        }
+    }
+
+    function showHome() {
+        hideAllViews();
+        document.getElementById('home-view').classList.add('active-view');
+        window.scrollTo(0, 0);
+    }
+
+    function showAccount() {
+        hideAllViews();
+        document.getElementById('account-view').classList.add('active-view');
+        window.scrollTo(0, 0);
+    }
+
+    function openProductDetails(title, price, mrp, imgUrl, summary) {
+        currentViewedProduct = { name: title, price: price, img: imgUrl };
+        document.getElementById('pd-title').innerText = title;
+        document.getElementById('pd-price').innerText = '₹' + price;
+        document.getElementById('pd-mrp').innerText = '₹' + mrp;
+        document.getElementById('pd-summary').innerText = summary;
+        
+        var discount = Math.round(((mrp - price) / mrp) * 100);
+        document.getElementById('pd-discount').innerText = discount + '% OFF';
+
+        var sliderHtml = '';
+        for(var i=1; i<=4; i++) {
+            sliderHtml += '<div class="pd-image-container">' +
+                          '<img src="' + imgUrl + '" alt="Product Image ' + i + '">' +
+                          '<div class="image-counter">' + i + '/4</div>' +
+                          '</div>';
+        }
+        document.getElementById('pd-slider').innerHTML = sliderHtml;
+        document.getElementById('pd-slider').scrollLeft = 0;
+
+        hideAllViews();
+        document.getElementById('product-detail-view').classList.add('active-view');
+        window.scrollTo(0, 0);
+    }
+
+    function addCurrentToCart() {
+        addToCart(currentViewedProduct.name, currentViewedProduct.price, currentViewedProduct.img);
+    }
+
+    function buyCurrentNow() {
+        showCheckout(currentViewedProduct.name, currentViewedProduct.price, 1);
+    }
+
+    function showCart() {
+        hideAllViews();
+        document.getElementById('cart-view').classList.add('active-view');
+        window.scrollTo(0, 0);
+
+        var container = document.getElementById('cart-items-container');
+        var totalPrice = 0;
+
+        if (cartList.length === 0) {
+            container.innerHTML = '<div class="empty-cart-msg"><h3>Your cart is empty</h3></div>';
+            document.getElementById('cart-total-price').innerText = '₹0';
+            return;
+        }
+
+        var htmlContent = '';
+        for (var i = 0; i < cartList.length; i++) {
+            var item = cartList[i];
+            var itemTotal = item.price * item.qty;
+            totalPrice += itemTotal;
+            
+            htmlContent += '<div class="cart-item">' +
+                '<img src="' + item.img + '" class="cart-item-img">' +
+                '<div class="cart-item-details">' +
+                    '<div class="cart-item-title">' + item.name + '</div>' +
+                    '<div class="cart-item-price">₹' + itemTotal + ' <span style="font-size:12px;color:#888;font-weight:normal;">(₹' + item.price + ' x ' + item.qty + ')</span></div>' +
+                    '<div class="qty-controls">' +
+                        '<button class="qty-btn" onclick="updateQty(' + i + ', -1)">-</button>' +
+                        '<span style="font-weight: bold; width: 20px; text-align: center;">' + item.qty + '</span>' +
+                        '<button class="qty-btn" onclick="updateQty(' + i + ', 1)">+</button>' +
+                        '<button type="button" class="cart-item-remove" onclick="removeFromCart(' + i + ')">Remove</button>' +
+                    '</div>' +
+                '</div></div>';
+        }
+        container.innerHTML = htmlContent;
+        document.getElementById('cart-total-price').innerText = '₹' + totalPrice;
+    }
+
+    function updateQty(index, change) {
+        if (cartList[index].qty + change > 0) {
+            cartList[index].qty += change;
+        } else {
+            cartList.splice(index, 1);
+        }
+        updateCartBadges();
+        saveData();
+        showCart(); 
+    }
+
+    function removeFromCart(index) {
+        cartList.splice(index, 1);
+        updateCartBadges();
+        saveData();
+        showCart();
+    }
+
+    function checkoutFromCart() {
+        if (cartList.length === 0) {
+            showToast("Cart is empty!");
+            return;
+        }
+        var totalPrice = 0;
+        var totalQty = 0;
+        for (var i = 0; i < cartList.length; i++) { 
+            totalPrice += (cartList[i].price * cartList[i].qty); 
+            totalQty += cartList[i].qty;
+        }
+        var itemName = cartList.length === 1 ? cartList[0].name : "Multiple Items (" + cartList.length + ")";
+        showCheckout(itemName, totalPrice, totalQty);
+    }
+    
+    function showCheckoutSingle(name, price) {
+        showCheckout(name, price, 1);
+    }
+
+    function showCheckout(productName, price, qty) {
+        if (!isLoggedIn) {
+            showToast("Order karne ke liye pehle Login karein!");
+            showLogin();
+            return;
+        }
+
+        hideAllViews();
+        document.getElementById('checkout-view').classList.add('active-view');
+        document.getElementById('co-error').style.display = 'none';
+        
+        document.getElementById('checkout-item-name').innerText = productName;
+        document.getElementById('checkout-item-qty').innerText = 'Qty: ' + qty;
+        
+        document.getElementById('summary-price').innerText = '₹' + price;
+        document.getElementById('total-payable').innerText = '₹' + price;
+        document.getElementById('bottom-bar-price').innerText = '₹' + price;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function proceedToPayment() {
+        var name = document.getElementById('co-name').value.trim();
+        var phone = document.getElementById('co-phone').value.trim();
+        var address = document.getElementById('co-address').value.trim();
+        var pincode = document.getElementById('co-pincode').value.trim();
+        var errorDiv = document.getElementById('co-error');
+        
+
+        if (name === '' || phone === '' || address === '' || pincode === '') {
+            errorDiv.innerText = "❌ Kripya order ke liye sabhi jankari bharein.";
+            errorDiv.style.display = "block";
+            return;
+        }
+        var phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(phone)) {
+            errorDiv.innerText = "❌ Kripya sahi 10-digit mobile number darj karein.";
+            errorDiv.style.display = "block";
+            return;
+        }
+        errorDiv.style.display = "none";
+
+        var radios = document.getElementsByName('payment_method');
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                selectedPaymentMethod = radios[i].value;
+                break;
+            }
+        }
+
+        if (selectedPaymentMethod === 'COD') {
+            finalizeOrder(); 
+            
+            
+        } else {
+            var amt = document.getElementById('bottom-bar-price').innerText;
+            document.getElementById('pay-screen-amount').innerText = amt;
+            
+            document.getElementById('upi-section').style.display = 'none';
+            document.getElementById('card-section').style.display = 'none';
+            document.getElementById('payment-error').style.display = 'none';
+
+            if (selectedPaymentMethod === 'UPI') {
+                document.getElementById('upi-section').style.display = 'block';
+            } else if (selectedPaymentMethod === 'CARD') {
+                document.getElementById('card-section').style.display = 'block';
+            }
+
+            hideAllViews();
+            document.getElementById('payment-view').classList.add('active-view');
+            window.scrollTo(0,0);
+        }
+    }
+
+    function showCheckoutFromPayment() {
+        hideAllViews();
+        document.getElementById('checkout-view').classList.add('active-view');
+    }
+
+    function processGatewayPayment() {
+        var errDiv = document.getElementById('payment-error');
+        
+        if (selectedPaymentMethod === 'UPI') {
+            var upi = document.getElementById('upi-id').value.trim();
+            if(upi === '') {
+                errDiv.innerText = "❌ Kripya UPI ID darj karein ya QR scan karein.";
+                errDiv.style.display = "block";
+                return;
+            }
+        } else if (selectedPaymentMethod === 'CARD') {
+            var cardNum = document.getElementById('card-num').value.trim();
+            var cardExp = document.getElementById('card-exp').value.trim();
+            var cardCvv = document.getElementById('card-cvv').value.trim();
+            if(cardNum.length < 16 || cardExp === '' || cardCvv.length < 3) {
+                errDiv.innerText = "❌ Kripya sahi Card details darj karein.";
+                errDiv.style.display = "block";
+                return;
+            }
+        }
+        
+        errDiv.style.display = "none";
+        showToast("Payment Processing...");
+        
+        setTimeout(function() {
+            finalizeOrder();
+        }, 1500); 
+        
+    }
+
+    function finalizeOrder() {
+        var itemName = document.getElementById('checkout-item-name').innerText;
+        var itemPrice = document.getElementById('bottom-bar-price').innerText;
+        var orderId = 'ORD' + Math.floor(Math.random() * 90000 + 10000); 
+        
+        var payText = "Cash on Delivery";
+        if(selectedPaymentMethod === 'UPI') payText = "Paid via UPI";
+        if(selectedPaymentMethod === 'CARD') payText = "Paid via Card";
+
+        var newOrderHtml = '<div style="border: 1px solid #eee; border-radius: 4px; padding: 12px; margin-bottom: 10px; background: #fafafa;">' +
+            '<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">' +
+                '<span style="font-weight: bold; font-size: 13px; color: #555;">Order #' + orderId + '</span>' +
+                '<span style="color: #388e3c; font-size: 12px; font-weight: bold;">Order Placed</span>' +
+            '</div>' +
+            '<div style="font-size: 14px; color: #212121; margin-bottom: 5px;">' + itemName + '</div>' +
+            '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                '<div style="font-size: 14px; font-weight: bold; color: #8b0000;">' + itemPrice + '</div>' +
+                '<div style="font-size: 11px; color: #888; background: #e0e0e0; padding: 2px 6px; border-radius: 4px;">' + payText + '</div>' +
+            '</div>' +
+        '</div>';
+
+        var noOrdersMsg = document.getElementById('no-orders-msg');
+        if (noOrdersMsg) noOrdersMsg.remove();
+
+        document.getElementById('order-history-container').innerHTML = newOrderHtml + document.getElementById('order-history-container').innerHTML;
+        localStorage.setItem('mt_orders', document.getElementById('order-history-container').innerHTML);
+
+        document.getElementById('co-name').value = '';
+        document.getElementById('co-phone').value = '';
+        document.getElementById('co-address').value = '';
+        document.getElementById('co-pincode').value = '';
+        document.getElementById('upi-id').value = '';
+        document.getElementById('card-num').value = '';
+        document.getElementById('card-exp').value = '';
+        document.getElementById('card-cvv').value = '';
+
+        cartList = []; 
+        updateCartBadges();
+        saveData(); 
+        
+        showToast('Order Placed Successfully!'); 
+        showAccount(); 
+    }
+
+    function handleAuthClick() {
+        if (isLoggedIn) {
+            showAccount(); 
+        } else {
+            showLogin(); 
+        }
+    }
+
+    function showLogin() {
+        document.getElementById('signup-view').style.display = 'none';
+        document.getElementById('login-view').style.display = 'block';
+    }
+
+    function showSignup() {
+        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('signup-view').style.display = 'block';
+    }
+
+    function closeAuth() {
+        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('signup-view').style.display = 'none';
+    }
+
+    function togglePassword(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.innerText = "🙈";
+        } else {
+            input.type = "password";
+            icon.innerText = "👁️";
+        }
+    }
+
+    function handleMockLogin() {
+        var userid = document.getElementById('login-userid').value;
+        var pass = document.getElementById('login-password').value;
+        if(userid === '' || pass === '') {
+            document.getElementById('login-error').innerText = "Please enter both details.";
+            document.getElementById('login-error').style.display = "block";
+        } else {
+            document.getElementById('login-error').style.display = "none";
+            isLoggedIn = true;
+            
+            var userName = "Kundan Verma"; 
+            
+            document.getElementById('header-auth-btn').innerText = "My Account";
+            document.getElementById('acc-name').innerText = userName;
+            document.getElementById('acc-contact').innerText = userid;
+            
+            localStorage.setItem('mt_loggedIn', 'true');
+            localStorage.setItem('mt_userName', userName);
+            localStorage.setItem('mt_userContact', userid);
+
+            showToast("Login Successful!");
+            closeAuth();
+        }
+    }
+
+    function handleMockSignup() {
+        var name = document.getElementById('signup-name').value;
+        var contact = document.getElementById('signup-contact').value;
+        var pass = document.getElementById('signup-password').value;
+        if(name === '' || contact === '' || pass === '') {
+            document.getElementById('signup-error').innerText = "Please fill all details.";
+            document.getElementById('signup-error').style.display = "block";
+        } else {
+            document.getElementById('signup-error').style.display = "none";
+            showToast("Account Created Successfully!");
+            showLogin();
+        }
+    }
+
+    function logout() {
+        isLoggedIn = false;
+        document.getElementById('header-auth-btn').innerText = "Login";
+        
+        localStorage.removeItem('mt_loggedIn');
+        localStorage.removeItem('mt_userName');
+        localStorage.removeItem('mt_userContact');
+        
+        showToast("Logged out successfully");
+        showHome();
+    }
+
+    function setCategory(cat, btnElement) {
+        currentCategory = cat; 
+        var btns = document.getElementsByClassName('filter-btn');
+        for(var i=0; i<btns.length; i++) {
+            btns[i].classList.remove('active');
+        }
+        btnElement.classList.add('active');
+        filterProducts();
+    }
+
+    function filterProducts() {
+        var input = document.getElementById('searchInput').value.toLowerCase();
+        var mainGrid = document.getElementById('main-product-grid');
+        var products = mainGrid.getElementsByClassName('product-card');
+        var hasResults = false;
+
+        for (var i = 0; i < products.length; i++) {
+            var titleElement = products[i].querySelector('.product-title');
+            var itemCategory = products[i].getAttribute('data-category'); 
+            
+            if (titleElement) {
+                var titleText = titleElement.innerText.toLowerCase();
+                var matchesSearch = titleText.indexOf(input) > -1;
+                var matchesCategory = (currentCategory === 'all' || itemCategory === currentCategory);
+
+                if (matchesSearch && matchesCategory) {
+                    products[i].style.display = "flex"; 
+                    hasResults = true;
+                } else {
+                    products[i].style.display = "none"; 
+                }
+            }
+        }
+
+        var noResultsMsg = document.getElementById('no-results-msg');
+        if (!hasResults) {
+            noResultsMsg.style.display = "block";
+        } else {
+            noResultsMsg.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>
